@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="task_title">
+        <item>Take out trash</item>
+        <item>Code</item>
+        <item>Wash dishes</item>
+    </string-array>
+
+    <string-array name="task_description">
+        <item>05 Dec 2015</item>
+        <item>22 Apr 2013</item>
+        <item>14 Sep 2015</item>
+    </string-array>
+
+</resources>
