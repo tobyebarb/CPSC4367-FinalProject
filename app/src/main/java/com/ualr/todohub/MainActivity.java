@@ -3,6 +3,7 @@ package com.ualr.todohub;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,11 +23,14 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.ualr.todohub.fragments.DatePickerDialogFragment;
+import com.ualr.todohub.fragments.NewTaskDialogFragment;
 import com.ualr.todohub.fragments.SettingsDialogFragment;
 import com.ualr.todohub.fragments.TaskListFragment;
 import com.ualr.todohub.model.Task;
 import com.ualr.todohub.model.TaskViewModel;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -37,8 +41,11 @@ public class MainActivity extends AppCompatActivity{
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String FRAGMENT_TAG = "TaskListFragment";
     private static final String SETTINGS_FRAGMENT_TAG = "SettingsDialogFragment";
+    private static final String DATEPICKER_FRAGMENT_TAG = "DatePickerDialogFragment";
+    private static final String NEW_TASK_FRAGMENT_TAG = "NewTaskDialogFragment";
 
     private FloatingActionButton mFAB;
+    private Button mDueDateBtn;
     public static Context here;
     private RecyclerView mRecyclerView;
     private Button mDelete;

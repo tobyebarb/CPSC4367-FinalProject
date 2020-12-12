@@ -25,6 +25,8 @@ import com.ualr.todohub.model.Task;
 import com.ualr.todohub.model.TaskViewModel;
 import com.ualr.todohub.utils.DataGenerator;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class TaskListFragment extends Fragment {
@@ -41,6 +43,10 @@ public class TaskListFragment extends Fragment {
     public static int selector = 0; //CHANGE THIS LATER
 
     private static final String TAG = TaskListFragment.class.getSimpleName();
+    private static final String FRAGMENT_TAG = "TaskListFragment";
+    private static final String SETTINGS_FRAGMENT_TAG = "SettingsDialogFragment";
+    private static final String DATEPICKER_FRAGMENT_TAG = "DatePickerDialogFragment";
+    private static final String NEW_TASK_FRAGMENT_TAG = "NewTaskDialogFragment";
 
     @Override
     public void onAttach(Context context) {
@@ -80,7 +86,8 @@ public class TaskListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mRecyclerView = view.findViewById(R.id.recyclerView);
-        List<Task> items = DataGenerator.getTaskData(mContext);
+        //List<Task> items = DataGenerator.getTaskData(mContext);
+        List<Task> items = new ArrayList<>();
         viewModel.setTaskList(items); //setting the model up with items
         final Context ctx = mContext;
         layoutManager = new LinearLayoutManager(mContext);
@@ -100,6 +107,16 @@ public class TaskListFragment extends Fragment {
         return mAdapter.getIndex();
     }
 
+    public void createTask(String title, String desc, Calendar cal) {
+        List<Task> currTaskList = viewModel.getTaskList().getValue();
+        Task task = new Task();
+        task.setTitle(title);
+        task.setDescription(desc);
+        task.setDueDate(cal);
+        currTaskList.add(task);
+        viewModel.setTaskList(currTaskList);
+    }
+
     public void toggleCompleted(int position) {
         viewModel.toggleItem(position);
     }
@@ -109,8 +126,9 @@ public class TaskListFragment extends Fragment {
         updateItems(tasks);
     }
 
-    public void showNewTaskDialog() { //FIX THIS TO SHOW NEW TASK DIALOG
-
+    public void showNewTaskDialog() {
+        NewTaskDialogFragment dialog = new NewTaskDialogFragment();
+        dialog.show(getFragmentManager(), NEW_TASK_FRAGMENT_TAG);
     }
 
 }
