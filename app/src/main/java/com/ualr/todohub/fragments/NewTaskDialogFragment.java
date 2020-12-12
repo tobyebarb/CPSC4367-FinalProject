@@ -24,12 +24,9 @@ import com.ualr.todohub.model.TaskViewModel;
 
 import java.util.List;
 
-public class SettingsDialogFragment extends DialogFragment {
+public class NewTaskDialogFragment extends DialogFragment {
 
-    private static final String TAG = SettingsDialogFragment.class.getSimpleName();
-    private Button uncompletedBtn;
-    private Button completedBtn;
-    private Button allBtn;
+    private static final String TAG = NewTaskDialogFragment.class.getSimpleName();
     private static TaskViewModel viewModel;
     private TaskListFragment listFragment;
 
@@ -47,12 +44,6 @@ public class SettingsDialogFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AlertDialogCustom));
 
-        builder.setTitle(R.string.settings_action_prompt)
-                .setItems(R.array.sorting_options, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        listFragment.changeSelector(which, viewModel.getTaskList().getValue());
-                    }
-                });
         return builder.create();
     }
 

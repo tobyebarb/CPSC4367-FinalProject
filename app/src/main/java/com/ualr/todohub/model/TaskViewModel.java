@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskViewModel extends ViewModel {
@@ -15,7 +16,7 @@ public class TaskViewModel extends ViewModel {
     private String TAG = TaskViewModel.class.getSimpleName();
 
     public TaskViewModel() {
-        taskList = new MutableLiveData<>();
+        taskList = new MutableLiveData<>(new ArrayList<>());
         selectedIndex = 0;
     }
 
@@ -37,5 +38,11 @@ public class TaskViewModel extends ViewModel {
 
     public void setTaskList(List<Task> list) {
         this.taskList.setValue(list);
+    }
+
+    public void toggleItem(int position) {
+        List<Task> currentTaskList = this.taskList.getValue();
+        currentTaskList.get(position).toggleCompleted();
+        this.taskList.setValue(currentTaskList);
     }
 }

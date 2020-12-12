@@ -68,6 +68,12 @@ public class Task {
         return dueDateString;
     }
 
+    public int getDueDateDiff() {
+        Calendar calendar = Calendar.getInstance();
+        int currDayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
+        return getCalendarDayOfYear() - currDayOfYear;
+    }
+
     public int getCalendarDayOfYear() {
         String calendarDayOfYear="";
         Calendar calendar = Calendar.getInstance();

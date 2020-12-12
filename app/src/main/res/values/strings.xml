@@ -3,4 +3,9 @@
     <string name="default_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
     <string name="default_day">Sunday</string>
     <string name="settings_action">Settings</string>
+    <string name="settings_action_prompt">How would you like to sort your list?</string>
+    <string name="button_uncompleted">Uncompleted Tasks</string>
+    <string name="button_completed">Completed Tasks</string>
+    <string name="button_all">All Tasks</string>
+    <string name="positive_btn">Okay</string>
 </resources>
