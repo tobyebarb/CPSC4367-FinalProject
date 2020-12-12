@@ -25,11 +25,14 @@ public class DataGenerator {
         String desc_arr[] = ctx.getResources().getStringArray(R.array.task_description);
 
         for (int i = 0; i < 30; i++) {
+            int month = randInt(11);
+            int day = randInt(29);
+            int year = 2020 + randInt(1);
             Task obj = new Task();
             obj.setTitle(title_arr[randInt(2)]);
             obj.setDescription(desc_arr[randInt(2)]);
             Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.YEAR,randInt(11),randInt(29));
+            cal.set(year,month,day);
             obj.setDueDate(cal);
             items.add(obj);
         }

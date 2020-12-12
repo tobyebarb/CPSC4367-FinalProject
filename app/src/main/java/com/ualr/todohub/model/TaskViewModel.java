@@ -21,7 +21,8 @@ public class TaskViewModel extends ViewModel {
 
     public LiveData<List<Task>> getTaskList() {
         if (taskList == null) {
-            taskList = new MutableLiveData<List<Task>>();
+            taskList = new MutableLiveData<>();
+            Log.d(TAG, "here");
         }
         return taskList;
     }
@@ -37,6 +38,4 @@ public class TaskViewModel extends ViewModel {
     public void setTaskList(List<Task> list) {
         this.taskList.setValue(list);
     }
-
-    public LiveData<List<Task>> getTask() { return this.taskList; }
 }
