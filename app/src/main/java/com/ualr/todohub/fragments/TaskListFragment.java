@@ -36,13 +36,7 @@ public class TaskListFragment extends Fragment {
     public Context mContext;
     private RecyclerView.LayoutManager layoutManager;
     private FloatingActionButton mFAB;
-    private static TaskViewModel viewModelUncompleted;
-    private static TaskViewModel viewModelCompleted;
-    private static TaskViewModel viewModelAll;
     private static TaskViewModel viewModel;
-    private LiveData<List<Task>> uncompletedTasks;
-    private LiveData<List<Task>> completedTasks;
-    private LiveData<List<Task>> allTasks;
 
     public static int selector = 0; //CHANGE THIS LATER
 
@@ -64,39 +58,13 @@ public class TaskListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(getActivity()).get(TaskViewModel.class);
-        allTasks = viewModel.getTaskList();
-        allTasks.observe(this, new Observer<List<Task>>() {
+
+        viewModel.getTaskList().observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
                 updateItems(tasks);
             }
         });
-
-        /*viewModelUncompleted = new ViewModelProvider(getActivity()).get(TaskViewModel.class);
-        viewModelCompleted = new ViewModelProvider(getActivity()).get(TaskViewModel.class);
-        viewModelAll = new ViewModelProvider(getActivity()).get(TaskViewModel.class);
-        uncompletedTasks = viewModelUncompleted.getTaskList();
-        uncompletedTasks.observe(this, new Observer<List<Task>>() {
-            @Override
-            public void onChanged(List<Task> tasks) {
-                updateItems(tasks, selector);
-            }
-        });
-
-        completedTasks = viewModelCompleted.getTaskList();
-        completedTasks.observe(this, new Observer<List<Task>>() {
-            @Override
-            public void onChanged(List<Task> tasks) {
-                updateItems(tasks, selector);
-            }
-        });
-        allTasks = viewModelAll.getTaskList();
-        allTasks.observe(this, new Observer<List<Task>>() {
-            @Override
-            public void onChanged(List<Task> tasks) {
-                updateItems(tasks, selector);
-            }
-        });*/
     }
 
     public void updateItems(List<Task> tasks){
@@ -112,21 +80,12 @@ public class TaskListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mRecyclerView = view.findViewById(R.id.recyclerView);
-        // TODO 01. Generate the item list to be displayed using the DataGenerator class
         List<Task> items = DataGenerator.getTaskData(mContext);
         viewModel.setTaskList(items); //setting the model up with items
         final Context ctx = mContext;
-        //Log.d(TAG, "Uncompleted size: " + uncompletedTasks.getValue().size() /*+ "\nCompleted size: " + completedTasks.getValue().size() + "\n All: " + allTasks.getValue().size()*/);
-
-        // TODO 03. Do the setup of a new RecyclerView instance to display the item list properly
-        //RecyclerView contactListView = mBinding.recyclerView;
-        // TODO 04. Define the layout of each item in the list
         layoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new Adapter(mContext, allTasks.getValue(), selector); // 0: Uncompleted tasks, 1: Completed Tasks, 2: All Tasks
-        //Log.d(TAG, viewModel.getTaskList().getValue().toString());
-
-        // TODO 09. Create a new instance of the created Adapter class and bind it to the RecyclerView instance created in step 03
+        mAdapter = new Adapter(mContext, viewModel.getTaskList().getValue());
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new Adapter.OnItemClickListener() {
             @Override
@@ -142,8 +101,12 @@ public class TaskListFragment extends Fragment {
     }
 
     public void toggleCompleted(int position) {
-        allTasks.getValue().get(position).toggleCompleted();
-        notify();
+        viewModel.toggleItem(position);
+    }
+
+    public void changeSelector (int selector, List<Task> tasks) {
+        this.selector = selector;
+        updateItems(tasks);
     }
 
     public void showNewTaskDialog() { //FIX THIS TO SHOW NEW TASK DIALOG

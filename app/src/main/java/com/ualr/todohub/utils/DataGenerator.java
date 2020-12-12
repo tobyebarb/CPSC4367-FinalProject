@@ -36,6 +36,7 @@ public class DataGenerator {
             obj.setDueDate(cal);
             items.add(obj);
         }
+
         Collections.shuffle(items);
         return items;
     }

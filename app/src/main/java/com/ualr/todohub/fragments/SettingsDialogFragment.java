@@ -27,10 +27,11 @@ import java.util.List;
 public class SettingsDialogFragment extends DialogFragment {
 
     private static final String TAG = SettingsDialogFragment.class.getSimpleName();
-    private Button titleET;
-    private EditText descriptionET;
-    private EditText textET;
+    private Button uncompletedBtn;
+    private Button completedBtn;
+    private Button allBtn;
     private static TaskViewModel viewModel;
+    private TaskListFragment listFragment;
 
     @NonNull
     @Override
@@ -40,49 +41,19 @@ public class SettingsDialogFragment extends DialogFragment {
         viewModel.getTaskList().observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
-                TaskListFragment listFragment = (TaskListFragment) getFragmentManager().findFragmentByTag("TaskListFragment");
+                listFragment = (TaskListFragment) getFragmentManager().findFragmentByTag("TaskListFragment");
             }
         });
 
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View dialoglayout = inflater.inflate(R.layout.settings_dialog_fragment, null);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AlertDialogCustom));
-/*
-        //toET = (EditText) dialoglayout.findViewById(R.id.toET);
-        //ameET = (EditText) dialoglayout.findViewById(R.id.nameET);
-        //textET = (EditText) dialoglayout.findViewById(R.id.textET);
 
-
-        int index = viewModel.getSelectedIndex();
-        //toET.setText(viewModel.getInboxList().getValue().get(index).getEmail());
-        //nameET.setText(viewModel.getInboxList().getValue().get(index).getFrom());
-        //textET.setText(viewModel.getInboxList().getValue().get(index).getMessage());
-
-        builder.setView(dialoglayout);
-
-        builder.setTitle(R.string.forward_title)
-                .setPositiveButton(R.string.send_button_text, new DialogInterface.OnClickListener() {
-                    @Override
+        builder.setTitle(R.string.settings_action_prompt)
+                .setItems(R.array.sorting_options, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        onSendBtnClicked(toET.getText().toString(), nameET.getText().toString(), textET.getText().toString(), viewModel.getSelectedIndex());
+                        listFragment.changeSelector(which, viewModel.getTaskList().getValue());
                     }
                 });
-
         return builder.create();
     }
-
-    public void onUncompletedBtnClicked(String toET, String nameET, String textET, int index) {
-        List<Task> currentData = viewModel.getTask().getValue();
-        currentData.get(index).setEmail(toET);
-        currentData.get(index).setFrom(nameET);
-        currentData.get(index).setMessage(textET);
-        viewModel.setInboxList(currentData);
-
-*/
-        return builder.create(); //delete this after debug
-    }
-
-
 
 }

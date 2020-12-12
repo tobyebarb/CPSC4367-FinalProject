@@ -13,4 +13,10 @@
         <item>14 Sep 2015</item>
     </string-array>
 
+    <string-array name="sorting_options">
+        <item>Uncompleted Tasks</item>
+        <item>Completed Tasks</item>
+        <item>All Tasks</item>
+    </string-array>
+
 </resources>
