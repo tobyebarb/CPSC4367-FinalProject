@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.ualr.todohub.MainActivity;
 import com.ualr.todohub.R;
 import com.ualr.todohub.adapter.Adapter;
 import com.ualr.todohub.model.Task;
@@ -47,6 +48,7 @@ public class TaskListFragment extends Fragment {
     private static final String SETTINGS_FRAGMENT_TAG = "SettingsDialogFragment";
     private static final String DATEPICKER_FRAGMENT_TAG = "DatePickerDialogFragment";
     private static final String NEW_TASK_FRAGMENT_TAG = "NewTaskDialogFragment";
+    private static final String TASK_FRAGMENT_TAG = "TaskDialogFragment";
 
     @Override
     public void onAttach(Context context) {
@@ -98,7 +100,6 @@ public class TaskListFragment extends Fragment {
             @Override
             public void onItemClick(View v, Task obj, int position) {
                 viewModel.setSelectedIndex(getIndex());
-                Log.d(TAG, String.valueOf(viewModel.getSelectedIndex()));
             }
         });
     }
@@ -108,13 +109,38 @@ public class TaskListFragment extends Fragment {
     }
 
     public void createTask(String title, String desc, Calendar cal) {
-        List<Task> currTaskList = viewModel.getTaskList().getValue();
-        Task task = new Task();
-        task.setTitle(title);
-        task.setDescription(desc);
-        task.setDueDate(cal);
-        currTaskList.add(task);
-        viewModel.setTaskList(currTaskList);
+        if (cal == null) {
+            ((MainActivity) getActivity()).nullTitle();
+            return;
+        } else if (title.isEmpty()) {
+            ((MainActivity)getActivity()).nullDueDate();
+        } else {
+            List<Task> currTaskList = viewModel.getTaskList().getValue();
+            Task task = new Task();
+            task.setTitle(title);
+            task.setDescription(desc);
+            task.setDueDate(cal);
+            currTaskList.add(task);
+            viewModel.setTaskList(currTaskList);
+        }
+    }
+
+    public void createTask(String title, String desc, Calendar cal, int parentID) {
+        if (cal == null) {
+            ((MainActivity) getActivity()).nullTitle();
+            return;
+        } else if (title.isEmpty()) {
+            ((MainActivity)getActivity()).nullDueDate();
+        } else {
+            List<Task> currTaskList = viewModel.getTaskList().getValue();
+            Task task = new Task();
+            task.setTitle(title);
+            task.setDescription(desc);
+            task.setDueDate(cal);
+            task.setParentID(parentID);
+            currTaskList.add(task);
+            viewModel.setTaskList(currTaskList);
+        }
     }
 
     public void toggleCompleted(int position) {
@@ -127,8 +153,19 @@ public class TaskListFragment extends Fragment {
     }
 
     public void showNewTaskDialog() {
-        NewTaskDialogFragment dialog = new NewTaskDialogFragment();
+        NewTaskDialogFragment dialog = new NewTaskDialogFragment(-1);
         dialog.show(getFragmentManager(), NEW_TASK_FRAGMENT_TAG);
+    }
+
+    public void showNewSubtaskDialog(int parentID) {
+        NewTaskDialogFragment dialog = new NewTaskDialogFragment(parentID);
+        dialog.show(getFragmentManager(), NEW_TASK_FRAGMENT_TAG);
+    }
+
+    public void showTaskDialog() {
+        Log.d(TAG, "Creating task dialog...");
+        TaskDialogFragment dialog = new TaskDialogFragment();
+        dialog.show(getActivity().getSupportFragmentManager(), TASK_FRAGMENT_TAG);
     }
 
 }

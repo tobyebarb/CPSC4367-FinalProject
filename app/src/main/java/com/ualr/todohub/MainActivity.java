@@ -112,4 +112,16 @@ public class MainActivity extends AppCompatActivity{
             }
         });
     }
+
+    public void nullDueDate() {
+        Snackbar.make(findViewById(R.id.rootView), R.string.null_due_date,
+                Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
+    public void nullTitle() {
+        Snackbar.make(findViewById(R.id.rootView), R.string.null_title,
+                Snackbar.LENGTH_SHORT)
+                .show();
+    }
 }

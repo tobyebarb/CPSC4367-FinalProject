@@ -10,10 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ualr.todohub.MainActivity;
 import com.ualr.todohub.R;
+import com.ualr.todohub.fragments.TaskDialogFragment;
 import com.ualr.todohub.fragments.TaskListFragment;
 import com.ualr.todohub.model.Task;
 
@@ -33,6 +35,7 @@ public class Adapter extends RecyclerView.Adapter {
     public int position;
     private static final int COMPLETED = 0;
     private static final int UNCOMPLETED = 1;
+    private static final String TASK_FRAGMENT_TAG = "TaskDialogFragment";
 
     public interface OnItemClickListener {
         void onItemClick(View v, Task obj, int position);
@@ -93,7 +96,7 @@ public class Adapter extends RecyclerView.Adapter {
                     TaskViewHolder taskViewHolder = (TaskViewHolder) holder;
                     taskViewHolder.lyt_parent.setVisibility(View.VISIBLE);
                     taskViewHolder.params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    taskViewHolder.title.setText(i.getTitle());
+                    taskViewHolder.title.setText(i.getTitle() + " ID: " + i.getId() + " PID: " + i.getParentID());
                     taskViewHolder.due_date.setText(i.getDueDateString());
                 } else {
                     TaskViewHolder taskViewHolder = (TaskViewHolder) holder;
@@ -192,6 +195,17 @@ public class Adapter extends RecyclerView.Adapter {
                     listFragment.toggleCompleted(position);
                     Log.d(TAG, "TASK ID: " + allTasks.get(position).getId() + " was clicked.");
                     if(allTasks.get(position).isCompleted()) Log.d(TAG, "TASK ID: " + allTasks.get(position).getId() + " is completed.");
+                }
+            });
+
+            lyt_parent.setOnClickListener(new View.OnClickListener() {
+                //@Override
+                public void onClick(View v) {
+                    Log.d(TAG, "Clicked item...");
+                    position = getAbsoluteAdapterPosition();
+                    mListener.onItemClick(v, allTasks.get(position), position);
+                    TaskDialogFragment dialog = new TaskDialogFragment();
+                    dialog.show(((AppCompatActivity)mContext).getSupportFragmentManager(), TASK_FRAGMENT_TAG);
                 }
             });
 

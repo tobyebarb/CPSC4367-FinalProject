@@ -33,6 +33,15 @@ public class NewTaskDialogFragment extends DialogFragment {
     private Button dueDateBtn;
     private Calendar calendar;
     private static TaskViewModel viewModel;
+    private final int parentID;
+
+    public NewTaskDialogFragment(int parentID) {
+        this.parentID = parentID;
+    }
+
+    public NewTaskDialogFragment() {
+        this.parentID = -1;
+    }
 
     @NonNull
     @Override
@@ -43,6 +52,7 @@ public class NewTaskDialogFragment extends DialogFragment {
             @Override
             public void onChanged(List<Task> tasks) {
                 TaskListFragment listFragment = (TaskListFragment) getFragmentManager().findFragmentByTag("TaskListFragment");
+                listFragment.updateItems(tasks);
             }
         });
 
@@ -64,7 +74,7 @@ public class NewTaskDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         TaskListFragment listFragment = (TaskListFragment) getFragmentManager().findFragmentByTag("TaskListFragment");
-                        listFragment.createTask(titleET.getText().toString(), descET.getText().toString(), calendar);
+                        listFragment.createTask(titleET.getText().toString(), descET.getText().toString(), calendar, parentID);
                     }
                 })
                 .setNegativeButton(R.string.new_task_prompt_negative, new DialogInterface.OnClickListener() {
