@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.ualr.todohub.MainActivity;
 import com.ualr.todohub.db.TaskContract;
 import com.ualr.todohub.db.TaskDbHelper;
 
@@ -27,7 +28,7 @@ public class TaskViewModel extends ViewModel {
 
     public TaskViewModel() {
         taskList = new MutableLiveData<>(new ArrayList<>());
-        db = mHelper.getWritableDatabase();
+        mHelper = new TaskDbHelper(MainActivity.here);
         values = new ContentValues();
         selectedIndex = 0;
     }
@@ -65,6 +66,7 @@ public class TaskViewModel extends ViewModel {
                 int day = cursor.getInt(cursor.getColumnIndex(TaskContract.TaskEntry.COL_DAY));
                 int month = cursor.getInt(cursor.getColumnIndex(TaskContract.TaskEntry.COL_MONTH));
                 int year = cursor.getInt(cursor.getColumnIndex(TaskContract.TaskEntry.COL_YEAR));
+                //boolean completed = cursor.getV(cursor.getColumnIndex(TaskContract.TaskEntry.COL_COMPLETED));
 
                 Task obj = new Task();
                 obj.setTitle(title);
@@ -78,6 +80,31 @@ public class TaskViewModel extends ViewModel {
             }
         }
         this.setTaskList(taskList);
+    }
+
+    public void addTaskToDb(String title, String desc, Calendar cal) {
+        db = mHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TaskContract.TaskEntry.COL_TASK_TITLE, title);
+        values.put(TaskContract.TaskEntry.COL_TASK_DESC, desc);
+        values.put(TaskContract.TaskEntry.COL_MONTH, cal.MONTH);
+        values.put(TaskContract.TaskEntry.COL_DAY, cal.DAY_OF_MONTH);
+        values.put(TaskContract.TaskEntry.COL_YEAR, cal.YEAR);
+
+        db.insertWithOnConflict(TaskContract.TaskEntry.TABLE,
+                null,
+                values,
+                SQLiteDatabase.CONFLICT_REPLACE);
+        db.close();
+        this.updateUI();
+    }
+
+    public void removeTaskFromDb() {
+
+    }
+
+    public void completeTaskDb() {
+
     }
 
     public void toggleItem(int position) {

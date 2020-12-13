@@ -23,7 +23,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.ualr.todohub.R;
 import com.ualr.todohub.adapter.Adapter;
-import com.ualr.todohub.db.TaskContract;
 import com.ualr.todohub.model.Task;
 import com.ualr.todohub.model.TaskViewModel;
 import com.ualr.todohub.utils.DataGenerator;
@@ -111,19 +110,7 @@ public class TaskListFragment extends Fragment {
     }
 
     public void createTask(String title, String desc, Calendar cal) {
-        ContentValues values = new ContentValues();
-        values.put(TaskContract.TaskEntry.COL_TASK_TITLE, title);
-        values.put(TaskContract.TaskEntry.COL_TASK_DESC, desc);
-        values.put(TaskContract.TaskEntry.COL_MONTH, cal.MONTH);
-        values.put(TaskContract.TaskEntry.COL_DAY, cal.DAY_OF_MONTH);
-        values.put(TaskContract.TaskEntry.COL_YEAR, cal.YEAR);
-
-        viewModel.getDb().insertWithOnConflict(TaskContract.TaskEntry.TABLE,
-                null,
-                values,
-                SQLiteDatabase.CONFLICT_REPLACE);
-        viewModel.getDb().close();
-        viewModel.updateUI();
+        viewModel.addTaskToDb(title, desc, cal);
         /*
         List<Task> currTaskList = viewModel.getTaskList().getValue();
         Task task = new Task();
