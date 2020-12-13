@@ -1,5 +1,11 @@
 package com.ualr.todohub.utils;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.ualr.todohub.MainActivity;
+import com.ualr.todohub.db.TaskContract;
+import com.ualr.todohub.db.TaskDbHelper;
 
 import com.ualr.todohub.R;
 import com.ualr.todohub.model.Task;
@@ -34,6 +40,7 @@ public class DataGenerator {
             Calendar cal = Calendar.getInstance();
             cal.set(year,month,day);
             obj.setDueDate(cal);
+
             items.add(obj);
         }
 

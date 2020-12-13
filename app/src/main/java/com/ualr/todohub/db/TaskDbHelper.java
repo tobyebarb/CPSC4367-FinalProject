@@ -31,4 +31,5 @@ public class TaskDbHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TaskContract.TaskEntry.TABLE);
         onCreate(db);
     }
+
 }

@@ -3,6 +3,7 @@ package com.ualr.todohub.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -33,6 +34,7 @@ public class NewTaskDialogFragment extends DialogFragment {
     private Button dueDateBtn;
     private Calendar calendar;
     private static TaskViewModel viewModel;
+
 
     @NonNull
     @Override

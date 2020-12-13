@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.ualr.todohub.db.*;
 import com.ualr.todohub.fragments.DatePickerDialogFragment;
 import com.ualr.todohub.fragments.NewTaskDialogFragment;
 import com.ualr.todohub.fragments.SettingsDialogFragment;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity{
     private CoordinatorLayout parentView;
     private String msg;
     private int duration;
+
+    public TaskDbHelper taskHelper = new TaskDbHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,4 +115,10 @@ public class MainActivity extends AppCompatActivity{
             }
         });
     }
+
+    public TaskDbHelper getTaskDbHelper()
+    {
+        return taskHelper;
+    }
+
 }
