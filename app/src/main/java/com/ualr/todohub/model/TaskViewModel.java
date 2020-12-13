@@ -28,7 +28,6 @@ public class TaskViewModel extends ViewModel {
 
     public TaskViewModel() {
         taskList = new MutableLiveData<>(new ArrayList<>());
-        mHelper = new TaskDbHelper(MainActivity.here);
         values = new ContentValues();
         selectedIndex = 0;
     }
@@ -83,6 +82,8 @@ public class TaskViewModel extends ViewModel {
     }
 
     public void addTaskToDb(String title, String desc, Calendar cal) {
+
+        mHelper = new TaskDbHelper(MainActivity.here);
         db = mHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TaskContract.TaskEntry.COL_TASK_TITLE, title);
