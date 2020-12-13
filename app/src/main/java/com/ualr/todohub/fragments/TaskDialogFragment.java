@@ -25,11 +25,10 @@ import com.ualr.todohub.model.Task;
 import com.ualr.todohub.model.TaskViewModel;
 import com.ualr.todohub.utils.DataGenerator;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class TaskListFragment extends Fragment {
+public class TaskDialogFragment extends Fragment {
 
     public static Context ctx;
 
@@ -42,7 +41,7 @@ public class TaskListFragment extends Fragment {
 
     public static int selector = 0; //CHANGE THIS LATER
 
-    private static final String TAG = TaskListFragment.class.getSimpleName();
+    private static final String TAG = TaskDialogFragment.class.getSimpleName();
     private static final String FRAGMENT_TAG = "TaskListFragment";
     private static final String SETTINGS_FRAGMENT_TAG = "SettingsDialogFragment";
     private static final String DATEPICKER_FRAGMENT_TAG = "DatePickerDialogFragment";
@@ -86,8 +85,7 @@ public class TaskListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mRecyclerView = view.findViewById(R.id.recyclerView);
-        //List<Task> items = DataGenerator.getTaskData(mContext);
-        List<Task> items = new ArrayList<>();
+        List<Task> items = DataGenerator.getTaskData(mContext);
         viewModel.setTaskList(items); //setting the model up with items
         final Context ctx = mContext;
         layoutManager = new LinearLayoutManager(mContext);

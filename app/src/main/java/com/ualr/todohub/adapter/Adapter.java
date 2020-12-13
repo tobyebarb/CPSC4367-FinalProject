@@ -183,6 +183,18 @@ public class Adapter extends RecyclerView.Adapter {
                 }
             });
 
+            checkmark_green.setOnClickListener(new View.OnClickListener() {
+                //@Override
+                public void onClick(View v) {
+                    position = getAbsoluteAdapterPosition();
+                    mListener.onItemClick(v, allTasks.get(position), position);
+                    TaskListFragment listFragment = new TaskListFragment();
+                    listFragment.toggleCompleted(position);
+                    Log.d(TAG, "TASK ID: " + allTasks.get(position).getId() + " was clicked.");
+                    if(allTasks.get(position).isCompleted()) Log.d(TAG, "TASK ID: " + allTasks.get(position).getId() + " is completed.");
+                }
+            });
+
         }
     }
 }

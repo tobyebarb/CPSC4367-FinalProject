@@ -8,4 +8,10 @@
     <string name="button_completed">Completed Tasks</string>
     <string name="button_all">All Tasks</string>
     <string name="positive_btn">Okay</string>
+    <string name="new_task_prompt_main">Enter new task: </string>
+    <string name="new_task_prompt_title">Task name: </string>
+    <string name="new_task_prompt_desc">Task description: </string>
+    <string name="new_task_prompt_due_date">Set Due Date</string>
+    <string name="new_task_prompt_positive">Add</string>
+    <string name="new_task_prompt_negative">Cancel</string>
 </resources>
