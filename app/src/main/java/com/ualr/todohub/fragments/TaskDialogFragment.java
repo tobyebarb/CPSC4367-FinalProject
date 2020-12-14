@@ -1,3 +1,4 @@
+
 package com.ualr.todohub.fragments;
 
 import android.app.AlertDialog;
@@ -65,11 +66,14 @@ public class TaskDialogFragment extends DialogFragment {
     private static final String DATEPICKER_FRAGMENT_TAG = "DatePickerDialogFragment";
     private static final String NEW_TASK_FRAGMENT_TAG = "NewTaskDialogFragment";
 
-    public TaskDialogFragment(int position) {
+
+    public TaskDialogFragment(int position, Task parentTask) {
         this.position = position;
+        this.parentTask = parentTask;
     }
 
     public TaskDialogFragment() {
+
     }
 
     @Override
@@ -87,42 +91,6 @@ public class TaskDialogFragment extends DialogFragment {
         mAdapter.updateItems(tasks);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.task_dialog_fragment, container, false);
-
-        return inflater.inflate(R.layout.task_dialog_fragment, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mRecyclerView = view.findViewById(R.id.subtask_recyclerView);
-        /*
-
-        VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-
-         */
-        //List<Task> items = DataGenerator.getTaskData(mContext); // THIS MAY CAUSE PROBLEMS WITH THE EXISTING TASKLIST
-        /*
-
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-         */
-        //viewModel.setTaskList(items); //setting the model up with items
-        final Context ctx = mContext;
-        layoutManager = new LinearLayoutManager(mContext);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new subtaskAdapter(mContext, viewModel.getTaskList().getValue(), parentTask);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new subtaskAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, Task obj, int position) {
-                viewModel.setSelectedIndex(getIndex());
-            }
-        });
-    }
-
     public int getIndex(){
         return mAdapter.getIndex();
     }
@@ -132,10 +100,11 @@ public class TaskDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
         viewModel = new ViewModelProvider(getActivity()).get(TaskViewModel.class);
+
         viewModel.getTaskList().observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
-                TaskListFragment listFragment = (TaskListFragment) getFragmentManager().findFragmentByTag("TaskListFragment");
+                updateItems(tasks);
             }
         });
 
@@ -147,29 +116,33 @@ public class TaskDialogFragment extends DialogFragment {
         descTV = (TextView) dialoglayout.findViewById(R.id.task_desc_expanded);
         dueDateTV = (TextView) dialoglayout.findViewById(R.id.task_due_date_expanded);
         subtaskBtn = (Button) dialoglayout.findViewById(R.id.add_subtask_btn);
-        mRecyclerView = (RecyclerView) dialoglayout.findViewById(R.id.subtask_recyclerView);
-//VVV
-        /*final Context ctx = mContext;
-        layoutManager = new LinearLayoutManager(mContext);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new subtaskAdapter(mContext, viewModel.getTaskList().getValue(), parentTask);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new subtaskAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, Task obj, int position) {
-                viewModel.setSelectedIndex(getIndex());
+
+        descTV.setText(parentTask.getDescription());
+        dueDateTV.setText(parentTask.getDueDateString());
+
+        subtaskBtn.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                onSubtaskBtn();
             }
-        });*///^^^^
+        });
 
         int index = viewModel.getSelectedIndex();
         parentTask = viewModel.getTaskList().getValue().get(index);
 
-        descTV.setText(viewModel.getTaskList().getValue().get(index).getDescription());
-        dueDateTV.setText(viewModel.getTaskList().getValue().get(index).getDueDateString());
+        mRecyclerView = (RecyclerView) dialoglayout.findViewById(R.id.subtask_recyclerView);
+        layoutManager = new LinearLayoutManager(mContext);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mAdapter = new subtaskAdapter(mContext, viewModel.getTaskList().getValue(), parentTask);
+        mRecyclerView.setAdapter(mAdapter);
 
-        builder.setView(dialoglayout);
+        mAdapter.setOnItemClickListenerSub(new subtaskAdapter.OnItemClickListenerSub() {
+            public void onItemClick(View v, Task obj, int position) {
+                viewModel.setSelectedIndex(getIndex());
+            }
+        });
 
         builder.setTitle(viewModel.getTaskList().getValue().get(index).getTitle())
+                .setView(dialoglayout)
                 .setPositiveButton(R.string.positive_btn, null)
                 .setNegativeButton(R.string.new_task_prompt_negative, new DialogInterface.OnClickListener() {
                     @Override
@@ -178,24 +151,12 @@ public class TaskDialogFragment extends DialogFragment {
                     }
                 });
 
-        subtaskBtn.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                onSubtaskBtn();
-            }
-        });
-
         return builder.create();
     }
 
-    public void onSubtaskBtn() {
+    public void onSubtaskBtn(){
         TaskListFragment listFragment = (TaskListFragment) getFragmentManager().findFragmentByTag(FRAGMENT_TAG);
         Log.d(TAG, String.valueOf(parentTask.getId()));
         listFragment.showNewSubtaskDialog(parentTask.getId());
-    }
-
-    public void toggleCompleted(int position) {
-        viewModel.toggleItem(position);
     }
 }

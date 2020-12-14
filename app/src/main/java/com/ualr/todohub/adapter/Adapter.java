@@ -27,8 +27,6 @@ import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter {
 
-    //private List<Task> uncompletedTasks;
-    //private List<Task> completedTasks;
     private List<Task> allTasks;
     private Context mContext;
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -46,8 +44,8 @@ public class Adapter extends RecyclerView.Adapter {
     public Adapter(Context context, List<Task> allTasks) {
         this.mContext = context;
         this.allTasks = allTasks;
-
     }
+
     public void setOnItemClickListener(final OnItemClickListener itemClickListener) {
         this.mListener = itemClickListener;
     }
@@ -204,7 +202,7 @@ public class Adapter extends RecyclerView.Adapter {
                     Log.d(TAG, "Clicked item...");
                     position = getAbsoluteAdapterPosition();
                     mListener.onItemClick(v, allTasks.get(position), position);
-                    TaskDialogFragment dialog = new TaskDialogFragment();
+                    TaskDialogFragment dialog = new TaskDialogFragment(position, allTasks.get(position));
                     dialog.show(((AppCompatActivity)mContext).getSupportFragmentManager(), TASK_FRAGMENT_TAG);
                 }
             });

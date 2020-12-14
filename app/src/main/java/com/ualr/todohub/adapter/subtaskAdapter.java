@@ -10,12 +10,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ualr.todohub.MainActivity;
 import com.ualr.todohub.R;
+import com.ualr.todohub.fragments.TaskDialogFragment;
 import com.ualr.todohub.fragments.TaskListFragment;
 import com.ualr.todohub.model.Task;
+import com.ualr.todohub.utils.DataGenerator;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,11 +37,11 @@ public class subtaskAdapter extends RecyclerView.Adapter {
     private static final int COMPLETED = 0;
     private static final int UNCOMPLETED = 1;
 
-    public interface OnItemClickListener {
+    public interface OnItemClickListenerSub {
         void onItemClick(View v, Task obj, int position);
     }
 
-    public OnItemClickListener mListener;
+    public OnItemClickListenerSub mListener;
 
     public subtaskAdapter(Context context, List<Task> allTasks, Task mainTask) {
         this.mContext = context;
@@ -47,7 +50,7 @@ public class subtaskAdapter extends RecyclerView.Adapter {
         this.id = mainTask.getId();
     }
 
-    public void setOnItemClickListener(final OnItemClickListener itemClickListener) {
+    public void setOnItemClickListenerSub(final OnItemClickListenerSub itemClickListener) {
         this.mListener = itemClickListener;
     }
 
@@ -70,7 +73,6 @@ public class subtaskAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh = null;
         View itemView = null;
-
         switch (viewType) {
             case (COMPLETED) :
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_list_item, parent, false);
@@ -87,17 +89,19 @@ public class subtaskAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int index) {
         Task i = allTasks.get(index);
-        if (!i.isCompleted() && i.getParentID() == id) {
+
+        if(i.getParentID()==id && !i.isCompleted()) {
             TaskViewHolder taskViewHolder = (TaskViewHolder) holder;
             taskViewHolder.lyt_parent.setVisibility(View.VISIBLE);
             taskViewHolder.params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            taskViewHolder.title.setText(i.getTitle());
+            taskViewHolder.title.setText(i.getTitle() + " ID: " + i.getId() + " PID: " + i.getParentID());
             taskViewHolder.due_date.setText(i.getDueDateString());
         } else {
             TaskViewHolder taskViewHolder = (TaskViewHolder) holder;
             taskViewHolder.lyt_parent.setVisibility(View.GONE);
             taskViewHolder.params.height = 0;
         }
+
     }
 
     public void updateItems(List<Task> tasks) {
@@ -144,7 +148,7 @@ public class subtaskAdapter extends RecyclerView.Adapter {
             params = lyt_parent.getLayoutParams();
 
             checkmark.setOnClickListener(new View.OnClickListener() {
-                //@Override
+                @Override
                 public void onClick(View v) {
                     position = getAbsoluteAdapterPosition();
                     mListener.onItemClick(v, allTasks.get(position), position);
@@ -156,7 +160,7 @@ public class subtaskAdapter extends RecyclerView.Adapter {
             });
 
             checkmark_green.setOnClickListener(new View.OnClickListener() {
-                //@Override
+                @Override
                 public void onClick(View v) {
                     position = getAbsoluteAdapterPosition();
                     mListener.onItemClick(v, allTasks.get(position), position);
@@ -164,6 +168,17 @@ public class subtaskAdapter extends RecyclerView.Adapter {
                     listFragment.toggleCompleted(position);
                     Log.d(TAG, "TASK ID: " + allTasks.get(position).getId() + " was clicked.");
                     if(allTasks.get(position).isCompleted()) Log.d(TAG, "TASK ID: " + allTasks.get(position).getId() + " is completed.");
+                }
+            });
+
+            lyt_parent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "Clicked item...");
+                    position = getAbsoluteAdapterPosition();
+                    Log.d(TAG, "Clicked item " + position);
+                    Log.d(TAG, "Clicked item " + allTasks.get(position).getTitle());
+                    mListener.onItemClick(v, allTasks.get(position), position);
                 }
             });
 

@@ -16,7 +16,7 @@
     <string name="new_task_prompt_negative">Cancel</string>
     <string name="null_due_date">Invalid due date, try again.</string>
     <string name="null_title">Invalid title, try again.</string>
-    <string name="constant_due_date_string">Due date:</string>
+    <string name="constant_due_date_string">Due:</string>
     <string name="add_subtask_btn_main">Add Subtask</string>
 
 </resources>

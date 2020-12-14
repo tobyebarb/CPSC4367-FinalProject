@@ -79,7 +79,6 @@ public class TaskListFragment extends Fragment {
         mAdapter.updateItems(tasks);
     }
 
-    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.task_list_fragment, container, false);
