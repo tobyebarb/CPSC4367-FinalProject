@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ualr.todohub.MainActivity;
@@ -94,8 +95,12 @@ public class Adapter extends RecyclerView.Adapter {
                     TaskViewHolder taskViewHolder = (TaskViewHolder) holder;
                     taskViewHolder.lyt_parent.setVisibility(View.VISIBLE);
                     taskViewHolder.params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    taskViewHolder.title.setText(i.getTitle() + " ID: " + i.getId() + " PID: " + i.getParentID());
+                    taskViewHolder.title.setText(i.getTitle());
                     taskViewHolder.due_date.setText(i.getDueDateString());
+
+                    if(i.getDueDateString().equalsIgnoreCase("Late")) taskViewHolder.due_date.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccentDark));
+                    else if(i.getDueDateString().equalsIgnoreCase("Today") || i.getDueDateString().equalsIgnoreCase("Tomorrow")) taskViewHolder.due_date.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccentGreen));
+                    else taskViewHolder.due_date.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccentGrey));
                 } else {
                     TaskViewHolder taskViewHolder = (TaskViewHolder) holder;
                     taskViewHolder.lyt_parent.setVisibility(View.GONE);

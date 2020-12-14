@@ -159,4 +159,7 @@ public class TaskDialogFragment extends DialogFragment {
         Log.d(TAG, String.valueOf(parentTask.getId()));
         listFragment.showNewSubtaskDialog(parentTask.getId());
     }
+
+    public void onDeleteBtn() {
+    }
 }

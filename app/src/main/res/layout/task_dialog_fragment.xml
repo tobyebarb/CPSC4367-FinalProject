@@ -16,12 +16,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageView
+                android:id="@+id/task_delete_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="11dp"
+                android:src="@drawable/ic_baseline_delete_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/add_subtask_btn" />
+
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="65dp"
                 android:layout_marginEnd="5dp"
                 android:text="@string/constant_due_date_string"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -34,7 +44,7 @@
                 android:id="@+id/task_due_date_expanded"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="65dp"
                 android:layout_marginEnd="52dp"
                 android:text="@string/default_day"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -57,8 +67,8 @@
                 android:id="@+id/add_subtask_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="36dp"
+                android:layout_marginTop="44dp"
+                android:layout_marginEnd="68dp"
                 android:text="@string/add_subtask_btn_main"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/task_due_date_expanded" />
