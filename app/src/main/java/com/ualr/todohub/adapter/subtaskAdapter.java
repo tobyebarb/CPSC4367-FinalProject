@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ualr.todohub.MainActivity;
 import com.ualr.todohub.R;
+import com.ualr.todohub.database.DataBaseHelper;
 import com.ualr.todohub.fragments.TaskDialogFragment;
 import com.ualr.todohub.fragments.TaskListFragment;
 import com.ualr.todohub.model.Task;
@@ -30,6 +31,7 @@ import java.util.List;
 public class subtaskAdapter extends RecyclerView.Adapter {
 
     private List<Task> allTasks;
+    public DataBaseHelper dataBaseHelper;
     private Task mainTask;
     private int id;
     private Context mContext;
@@ -37,6 +39,7 @@ public class subtaskAdapter extends RecyclerView.Adapter {
     public int position;
     private static final int COMPLETED = 0;
     private static final int UNCOMPLETED = 1;
+    private static final String TASK_FRAGMENT_TAG = "TaskDialogFragment";
 
     public interface OnItemClickListenerSub {
         void onItemClick(View v, Task obj, int position);
@@ -179,11 +182,19 @@ public class subtaskAdapter extends RecyclerView.Adapter {
             lyt_parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "Clicked item...");
+                    /*Log.d(TAG, "Clicked item...");
                     position = getAbsoluteAdapterPosition();
                     Log.d(TAG, "Clicked item " + position);
                     Log.d(TAG, "Clicked item " + allTasks.get(position).getTitle());
+                    mListener.onItemClick(v, allTasks.get(position), position);*/
+
+                    Log.d(TAG, "Clicked item...");
+                    position = getAbsoluteAdapterPosition();
                     mListener.onItemClick(v, allTasks.get(position), position);
+                    TaskDialogFragment dialog = new TaskDialogFragment(position, allTasks.get(position));
+                    Log.d(TAG, "PARENT TASK NAME: " + allTasks.get(position).getTitle() + "\nPARENT TASK ID: " + allTasks.get(position).getId());
+                    Log.d(TAG, allTasks.toString());
+                    dialog.show(((AppCompatActivity)mContext).getSupportFragmentManager(), TASK_FRAGMENT_TAG);
                 }
             });
 

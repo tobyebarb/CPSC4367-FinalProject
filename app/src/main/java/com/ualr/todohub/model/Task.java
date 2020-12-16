@@ -7,7 +7,7 @@ import java.util.List;
 public class Task {
 
     private static int count;
-    private int id=0;
+    private int id;
     private int parentID;
     private Calendar dueDate;
     private int[] timeDue;
@@ -18,7 +18,27 @@ public class Task {
 
     public Task() {
         this.isCompleted = false;
-        this.id = count++;
+    }
+
+    public Task(int id, int parentID, String title, String description, int month, int day, int year, boolean isCompleted) {
+        this.id = id;
+        this.parentID = parentID;
+        this.dueDate = loadDueDate(month, day, year);
+        this.title = title;
+        this.description = description;
+        this.isCompleted = isCompleted;
+    }
+
+    @Override
+    public String toString() {
+        return "\nTask{" +
+                "id=" + id +
+                ", parentID=" + parentID +
+                ", dueDate=" + getDueDateString() +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", isCompleted=" + isCompleted +
+                '}' + "\n";
     }
 
     public int getId() {
@@ -35,6 +55,12 @@ public class Task {
 
     public void setParentID(int parentID) {
         this.parentID = parentID;
+    }
+
+    public Calendar loadDueDate(int month, int day, int year) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month, day);
+        return cal;
     }
 
     public int[] getDueDate() {

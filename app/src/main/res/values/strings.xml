@@ -18,5 +18,6 @@
     <string name="null_title">Invalid title, try again.</string>
     <string name="constant_due_date_string">Due:</string>
     <string name="add_subtask_btn_main">Add Subtask</string>
+    <string name="default_prompt">Click here to start a task!</string>
 
 </resources>

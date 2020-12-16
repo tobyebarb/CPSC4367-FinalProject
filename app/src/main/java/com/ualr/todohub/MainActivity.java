@@ -10,7 +10,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -18,11 +22,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.ualr.todohub.database.DataBaseHelper;
 import com.ualr.todohub.fragments.DatePickerDialogFragment;
 import com.ualr.todohub.fragments.NewTaskDialogFragment;
 import com.ualr.todohub.fragments.SettingsDialogFragment;
@@ -51,8 +57,10 @@ public class MainActivity extends AppCompatActivity{
     private Button mDelete;
     private ViewModel viewModel;
     private CoordinatorLayout parentView;
+    public DataBaseHelper dataBaseHelper;
     private String msg;
     private int duration;
+    public static final String PREFS_NAME = "MyPrefsFile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +68,16 @@ public class MainActivity extends AppCompatActivity{
         //mBinding = InboxFragmentBinding.inflate(getLayoutInflater());
         //setContentView(mBinding.getRoot());
         setContentView(R.layout.activity_main);
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        boolean dialogShown = settings.getBoolean("dialogShown", false);
+
+        if (!dialogShown) {
+            showStartDialog();
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("dialogShown", true);
+            editor.commit();
+        }
         viewModel = new ViewModelProvider(this).get(TaskViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -71,6 +89,19 @@ public class MainActivity extends AppCompatActivity{
         ft.replace(R.id.fragment_placeholder, new TaskListFragment(), FRAGMENT_TAG);
         ft.commit();
         getSupportFragmentManager().executePendingTransactions();
+    }
+
+    private void showStartDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Welcome to ToDoHub!")
+                .setMessage("To start your first task, click the button in the bottom right!")
+                .setPositiveButton(R.string.positive_btn, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
     }
 
     @Override

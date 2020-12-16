@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.ualr.todohub.MainActivity;
 import com.ualr.todohub.R;
 import com.ualr.todohub.adapter.Adapter;
+import com.ualr.todohub.database.DataBaseHelper;
 import com.ualr.todohub.model.Task;
 import com.ualr.todohub.model.TaskViewModel;
 import com.ualr.todohub.utils.DataGenerator;
@@ -40,6 +42,7 @@ public class TaskListFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private FloatingActionButton mFAB;
     private static TaskViewModel viewModel;
+    public DataBaseHelper dataBaseHelper;
 
     public static int selector = 0; //CHANGE THIS LATER
 
@@ -73,6 +76,8 @@ public class TaskListFragment extends Fragment {
                 updateItems(tasks);
             }
         });
+
+        dataBaseHelper = new DataBaseHelper(mContext); // MIGHT BE WRONG!!
     }
 
     public void updateItems(List<Task> tasks){
@@ -88,9 +93,9 @@ public class TaskListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mRecyclerView = view.findViewById(R.id.recyclerView);
         //List<Task> items = DataGenerator.getTaskData(mContext);
-        List<Task> items = new ArrayList<>();
+        List<Task> items = dataBaseHelper.getAll();
         viewModel.setTaskList(items); //setting the model up with items
-        final Context ctx = mContext;
+        ctx = mContext;
         layoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new Adapter(mContext, viewModel.getTaskList().getValue());
@@ -107,38 +112,24 @@ public class TaskListFragment extends Fragment {
         return mAdapter.getIndex();
     }
 
-    public void createTask(String title, String desc, Calendar cal) {
-        if (cal == null) {
-            ((MainActivity) getActivity()).nullTitle();
-            return;
-        } else if (title.isEmpty()) {
-            ((MainActivity)getActivity()).nullDueDate();
-        } else {
-            List<Task> currTaskList = viewModel.getTaskList().getValue();
-            Task task = new Task();
-            task.setTitle(title);
-            task.setDescription(desc);
-            task.setDueDate(cal);
-            currTaskList.add(task);
-            viewModel.setTaskList(currTaskList);
-        }
-    }
-
     public void createTask(String title, String desc, Calendar cal, int parentID) {
         if (cal == null) {
-            ((MainActivity) getActivity()).nullTitle();
+            ((MainActivity) getActivity()).nullDueDate();
             return;
         } else if (title.isEmpty()) {
-            ((MainActivity)getActivity()).nullDueDate();
+            ((MainActivity)getActivity()).nullTitle();
         } else {
-            List<Task> currTaskList = viewModel.getTaskList().getValue();
+            List<Task> currTaskList = dataBaseHelper.getAll(); // MIGHT NOT WORK
             Task task = new Task();
             task.setTitle(title);
             task.setDescription(desc);
             task.setDueDate(cal);
             task.setParentID(parentID);
             currTaskList.add(task);
+            boolean success = dataBaseHelper.addOne(task);
+            currTaskList = dataBaseHelper.getAll();
             viewModel.setTaskList(currTaskList);
+            //Log.d(TAG, String.valueOf(success));
         }
     }
 

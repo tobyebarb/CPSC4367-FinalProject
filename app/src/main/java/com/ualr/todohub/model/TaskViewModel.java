@@ -1,10 +1,15 @@
 package com.ualr.todohub.model;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.ualr.todohub.MainActivity;
+import com.ualr.todohub.database.DataBaseHelper;
+import com.ualr.todohub.fragments.TaskListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +18,7 @@ public class TaskViewModel extends ViewModel {
 
     private MutableLiveData<List<Task>> taskList;
     private int selectedIndex;
+    public DataBaseHelper dataBaseHelper;
     private String TAG = TaskViewModel.class.getSimpleName();
 
     public TaskViewModel() {
@@ -41,8 +47,14 @@ public class TaskViewModel extends ViewModel {
     }
 
     public void toggleItem(int position) {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(TaskListFragment.ctx);
         List<Task> currentTaskList = this.taskList.getValue();
-        currentTaskList.get(position).toggleCompleted();
+        Task task = currentTaskList.get(position);
+        currentTaskList = dataBaseHelper.getAll();
+        //currentTaskList.get(position).toggleCompleted();
+        Log.d(TAG, task.toString());
+        dataBaseHelper.toggleItem(task);
+        currentTaskList = dataBaseHelper.getAll();
         this.taskList.setValue(currentTaskList);
     }
 }

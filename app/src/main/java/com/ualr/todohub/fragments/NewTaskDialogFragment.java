@@ -48,13 +48,13 @@ public class NewTaskDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
         viewModel = new ViewModelProvider(getActivity()).get(TaskViewModel.class);
-        viewModel.getTaskList().observe(this, new Observer<List<Task>>() {
+        /*viewModel.getTaskList().observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
                 TaskListFragment listFragment = (TaskListFragment) getFragmentManager().findFragmentByTag("TaskListFragment");
                 listFragment.updateItems(tasks);
             }
-        });
+        });*/
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialoglayout = inflater.inflate(R.layout.new_task_dialog_fragment, null);
@@ -74,6 +74,7 @@ public class NewTaskDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         TaskListFragment listFragment = (TaskListFragment) getFragmentManager().findFragmentByTag("TaskListFragment");
+                        Log.d(TAG, "THIS IS THE PARENT ID GOING INTO THE CREATE TASK: " + parentID);
                         listFragment.createTask(titleET.getText().toString(), descET.getText().toString(), calendar, parentID);
                     }
                 })

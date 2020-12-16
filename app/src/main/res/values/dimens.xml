@@ -1,2 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <dimen name="activity_main_fab_margin">16dp</dimen>
+    <dimen name="activity_main_toolbar_elevation">4dp</dimen>
+    <dimen name="task_list_fragment_recyclerview_marginTop">56dp</dimen>
+    <dimen name="new_task_dialog_fragment_title_TV_marginTop">16dp</dimen>
+    <dimen name="new_task_dialog_fragment_title_TV_marginStart">16dp</dimen>
+    <dimen name="new_task_dialog_fragment_desc_TV_marginStart">16dp</dimen>
+    <dimen name="new_task_dialog_fragment_desc_TV_marginTop">24dp</dimen>
+    <dimen name="new_task_dialog_fragment_due_date_btn_marginTop">60dp</dimen>
+    <dimen name="new_task_dialog_fragment_title_ET_marginLeft">16dp</dimen>
+    <dimen name="new_task_dialog_fragment_title_ET_marginRight">16dp</dimen>
+    <dimen name="new_task_dialog_fragment_desc_ET_marginLeft">16dp</dimen>
+    <dimen name="new_task_dialog_fragment_desc_ET_marginRight">16dp</dimen>
+    <dimen name="task_list_item_checkmark_layout_width">26dp</dimen>
+    <dimen name="task_list_item_checkmark_layout_height">26dp</dimen>
+    <dimen name="task_list_item_checkmark_layout_marginStart">12dp</dimen>
+    <dimen name="task_list_item_view_layout_width">370dp</dimen>
+    <dimen name="task_list_item_view_layout_height">1dp</dimen>
+    <dimen name="task_list_item_view_layout_marginTop">16dp</dimen>
+    <dimen name="task_list_item_title_layout_marginStart">6dp</dimen>
+    <dimen name="task_list_item_title_layout_maxWidth">200dp</dimen>
+    <dimen name="task_list_item_title_textSize">15sp</dimen>
+    <dimen name="task_list_item_due_date_marginEnd">20dp</dimen>
+    <dimen name="task_list_item_due_date_maxWidth">200dp</dimen>
+    <dimen name="task_dialog_fragment_delete_btn_marginBottom">11dp</dimen>
+    <dimen name="task_dialog_fragment_constant_string_marginStart">10dp</dimen>
+    <dimen name="task_dialog_fragment_constant_string_marginTop">65dp</dimen>
+    <dimen name="task_dialog_fragment_constant_string_marginEnd">5dp</dimen>
+    <dimen name="task_dialog_fragment_due_date_expanded_marginTop">65dp</dimen>
+    <dimen name="task_dialog_fragment_due_date_expanded_marginEnd">52dp</dimen>
+    <dimen name="task_dialog_fragment_desc_expanded_maxWidth">200dp</dimen>
+    <dimen name="task_dialog_fragment_desc_expanded_marginLeft">10dp</dimen>
+    <dimen name="task_dialog_fragment_subtask_btn_marginTop">44dp</dimen>
+    <dimen name="task_dialog_fragment_subtask_btn_marginEnd">68dp</dimen>
+    <dimen name="task_dialog_fragment_recyclerview_layout_height">256dp</dimen>
+</resources>

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ualr.todohub.MainActivity;
 import com.ualr.todohub.R;
+import com.ualr.todohub.database.DataBaseHelper;
 import com.ualr.todohub.fragments.TaskDialogFragment;
 import com.ualr.todohub.fragments.TaskListFragment;
 import com.ualr.todohub.model.Task;
@@ -35,6 +36,7 @@ public class Adapter extends RecyclerView.Adapter {
     private static final int COMPLETED = 0;
     private static final int UNCOMPLETED = 1;
     private static final String TASK_FRAGMENT_TAG = "TaskDialogFragment";
+    public DataBaseHelper dataBaseHelper;
 
     public interface OnItemClickListener {
         void onItemClick(View v, Task obj, int position);
@@ -115,6 +117,10 @@ public class Adapter extends RecyclerView.Adapter {
                     taskViewHolder.title.setText(i.getTitle());
                     taskViewHolder.due_date.setText(i.getDueDateString());
                     taskViewHolder.checkmark_green.setVisibility(View.VISIBLE);
+
+                    if(i.getDueDateString().equalsIgnoreCase("Late")) taskViewHolder.due_date.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccentDark));
+                    else if(i.getDueDateString().equalsIgnoreCase("Today") || i.getDueDateString().equalsIgnoreCase("Tomorrow")) taskViewHolder.due_date.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccentGreen));
+                    else taskViewHolder.due_date.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccentGrey));
                 } else {
                     TaskViewHolder taskViewHolder = (TaskViewHolder) holder;
                     taskViewHolder.lyt_parent.setVisibility(View.GONE);
@@ -130,6 +136,11 @@ public class Adapter extends RecyclerView.Adapter {
                 taskViewHolder.due_date.setText(i.getDueDateString());
                 if (i.isCompleted()) taskViewHolder.checkmark_green.setVisibility(View.VISIBLE);
                 else taskViewHolder.checkmark_green.setVisibility(View.GONE);
+
+                if(i.getDueDateString().equalsIgnoreCase("Late")) taskViewHolder.due_date.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccentDark));
+                else if(i.getDueDateString().equalsIgnoreCase("Today") || i.getDueDateString().equalsIgnoreCase("Tomorrow")) taskViewHolder.due_date.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccentGreen));
+                else taskViewHolder.due_date.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccentGrey));
+
                 break;
         }
     }
@@ -165,6 +176,7 @@ public class Adapter extends RecyclerView.Adapter {
         public ImageView checkmark_green;
         public TextView title;
         public TextView due_date;
+        public TextView prompt;
         public LinearLayout lyt_parent;
         public ViewGroup.LayoutParams params;
 
@@ -208,6 +220,8 @@ public class Adapter extends RecyclerView.Adapter {
                     position = getAbsoluteAdapterPosition();
                     mListener.onItemClick(v, allTasks.get(position), position);
                     TaskDialogFragment dialog = new TaskDialogFragment(position, allTasks.get(position));
+                    Log.d(TAG, "PARENT TASK NAME: " + allTasks.get(position).getTitle() + "\nPARENT TASK ID: " + allTasks.get(position).getId());
+                    Log.d(TAG, allTasks.toString());
                     dialog.show(((AppCompatActivity)mContext).getSupportFragmentManager(), TASK_FRAGMENT_TAG);
                 }
             });
